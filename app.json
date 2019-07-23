@@ -1,0 +1,32 @@
+{
+    "expo": {
+        "name": "Spellz",
+        "slug": "occultistSpellTracker",
+        "privacy": "public",
+        "sdkVersion": "33.0.0",
+        "platforms": [ "android" ],
+        "version": "0.0.1",
+        "orientation": "portrait",
+        "icon": "./assets/androidIcon.png",
+        "splash": {
+        "image": "./assets/androidIcon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#78ceae"
+        },
+            "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "android": {
+            "versionCode": 1,
+            "package": "com.dexx.occultistSpellTracker",
+            "permissions": []
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "primaryColor": "#78ceae"
+    }
+}
