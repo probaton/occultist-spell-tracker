@@ -1,14 +1,18 @@
 import React from "react";
+import { Button, StyleSheet, View } from "react-native";
 
-import Spell from "./Spell";
 
-interface IHomeState {
-    viewState?: HomeViewState;
+import ListItem from "./ListItem";
+import { SpellDialog } from "./SpellDialog";
+
+import { Spell } from "../spells/Spell";
+import SpellStore from "../store/SpellStore";
+
+interface IState {
+    viewState: "createSpell" | undefined;
 }
 
-type HomeViewState = "active" | "recharging" | "inactive";
-
-export default class Home extends React.Component<any, IHomeState> {
+export default class Home extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
         this.state = { viewState: undefined };
@@ -17,6 +21,9 @@ export default class Home extends React.Component<any, IHomeState> {
     render() {
         return (
             <>
+                <View style={styles.topBar}>
+                    <Button title="New" onPress={() => this.setState({ viewState: "createSpell" })}/>
+                </View>
                 {this.renderContent()}
             </>
         );
@@ -24,16 +31,29 @@ export default class Home extends React.Component<any, IHomeState> {
 
     private renderContent() {
         switch (this.state.viewState) {
-            case undefined: return this.renderButtons();
+            case ("createSpell"): return <SpellDialog close={this.closeDialogs}/>;
+            default: return this.renderButtons();
         }
     }
 
     private renderButtons() {
         return (
             <>
-                <Spell caption="Cookies"/>
-                <Spell caption="Grenades"/>
+                <ListItem spell={new Spell("fireball", "when I happen", "what happens", 5, 1, 1)}/>
+                <ListItem spell={new Spell("magic missile", "when I happen", "what happens", 5, 1, 1)}/>
             </>
         );
     }
+
+    private closeDialogs = () => {
+        this.setState({ viewState: undefined });
+    }
 }
+
+const styles = StyleSheet.create({
+    topBar: {
+        backgroundColor: "#4f8973ff",
+        maxHeight: 100,
+        flex: 1,
+    },
+});

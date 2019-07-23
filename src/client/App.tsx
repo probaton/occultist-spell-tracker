@@ -48,11 +48,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#78ceae",
         flex: 1,
     },
-    topBar: {
-        backgroundColor: "#4f8973ff",
-        maxHeight: 100,
-        flex: 1,
-    },
     container: {
         flex: 1,
         alignItems: "center",

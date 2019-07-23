@@ -1,15 +1,17 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
+import { Spell } from "../spells/Spell";
+
 interface IProps {
-    caption: string;
+    spell: Spell;
 }
 
-export default class Spell extends React.Component<IProps> {
+export default class ListItem extends React.Component<IProps> {
     render() {
         return (
             <TouchableOpacity style={styles.container}>
-                <Text style={styles.caption}>{this.props.caption}</Text>
+                <Text style={styles.caption}>{this.props.spell.name}</Text>
             </TouchableOpacity>
         );
     }
