@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-import { Spell } from "../spells/Spell";
+import Spell from "../spells/Spell";
 
 interface IProps {
     spell: Spell;

@@ -1,10 +1,10 @@
-import { Spell } from "../spells/Spell";
+import Spell from "../spells/Spell";
 import StoreItem from "./StoreItem";
 
 export default abstract class SpellStore {
     static async get(): Promise<Spell[]> {
-        const wardrobeString = await this.store().get();
-        return wardrobeString ? JSON.parse(wardrobeString) as Spell[] : [];
+        const spellsString = await this.store().get();
+        return spellsString ? JSON.parse(spellsString) as Spell[] : [];
     }
 
     static async add(spell: Spell): Promise<void> {
@@ -28,6 +28,10 @@ export default abstract class SpellStore {
 
     private static store(): StoreItem {
         return new StoreItem("spells");
+    }
+
+    static async clear() {
+        this.store().clear();
     }
 }
 

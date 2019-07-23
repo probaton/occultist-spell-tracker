@@ -5,17 +5,25 @@ import { Button, StyleSheet, View } from "react-native";
 import ListItem from "./ListItem";
 import { SpellDialog } from "./SpellDialog";
 
-import { Spell } from "../spells/Spell";
+import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
 
 interface IState {
     viewState: "createSpell" | undefined;
+    spells: Spell[];
 }
 
 export default class Home extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
-        this.state = { viewState: undefined };
+        this.state = {
+            viewState: undefined,
+            spells: [],
+        };
+    }
+
+    async componentDidMount() {
+        this.setState({ spells: await SpellStore.get() });
     }
 
     render() {
@@ -23,6 +31,8 @@ export default class Home extends React.Component<any, IState> {
             <>
                 <View style={styles.topBar}>
                     <Button title="New" onPress={() => this.setState({ viewState: "createSpell" })}/>
+                    <Button title="List" onPress={async () => console.log(">>> spells", await SpellStore.get())}/>
+                    <Button title="Clear" onPress={() => SpellStore.clear()}/>
                 </View>
                 {this.renderContent()}
             </>
@@ -32,17 +42,12 @@ export default class Home extends React.Component<any, IState> {
     private renderContent() {
         switch (this.state.viewState) {
             case ("createSpell"): return <SpellDialog close={this.closeDialogs}/>;
-            default: return this.renderButtons();
+             default: return this.renderItems();
         }
     }
 
-    private renderButtons() {
-        return (
-            <>
-                <ListItem spell={new Spell("fireball", "when I happen", "what happens", 5, 1, 1)}/>
-                <ListItem spell={new Spell("magic missile", "when I happen", "what happens", 5, 1, 1)}/>
-            </>
-        );
+    private renderItems() {
+        return this.state.spells.map(spell => <ListItem key={spell.id} spell={spell}/>);
     }
 
     private closeDialogs = () => {

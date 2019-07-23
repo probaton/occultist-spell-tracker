@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import Input from "./controls/Input";
 import Interaction from "./Interaction";
 
-import { Spell } from "../spells/Spell";
+import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
 
 interface IProps {
