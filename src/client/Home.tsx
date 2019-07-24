@@ -1,14 +1,14 @@
 import React from "react";
 import { Text } from "react-native";
 
-import { SpellState } from "../spells/SpellState";
+import List from "./List";
 import ListItem from "./ListItem";
-import { SpellDialog } from "./SpellDialog";
+import SpellDialog from "./SpellDialog";
+import TabBar from "./TabBar";
 
 import Spell from "../spells/Spell";
+import { SpellState } from "../spells/SpellState";
 import SpellStore from "../store/SpellStore";
-import List from "./List";
-import TabBar from "./TabBar";
 
 interface IState {
     viewState: "createSpell" | undefined;
@@ -42,17 +42,17 @@ export default class Home extends React.Component<any, IState> {
     private renderContent() {
         return (
             <>
-                <TabBar onTabPress={this.selectTab}/>
-                {this.props.loading ? null : this.renderList()}
+                <TabBar onTabPress={this.selectTab} onAddPress={() => this.setState({ viewState: "createSpell" })}/>
+                {this.state.loading ? null : this.renderList()}
             </>
         );
     }
 
     private renderList() {
         switch (this.state.activeTab) {
-            case ("active"): return <List items={this.state.spells} renderItem={this.renderItem}/>;
-            case ("recharge"): return <List items={this.state.spells} renderItem={this.renderWtf}/>;
-            case ("inactive"): return <List items={this.state.spells} renderItem={this.renderWtf}/>;
+            case ("active"): return <List items={this.filterSpellsByState("active")} renderItem={this.renderItem}/>;
+            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderWtf}/>;
+            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderWtf}/>;
         }
     }
 
@@ -75,5 +75,9 @@ export default class Home extends React.Component<any, IState> {
     private refreshSpells = async () => {
         this.setState({ loading: true });
         this.setState({ loading: false, spells: await SpellStore.get() });
+    }
+
+    private filterSpellsByState(state: SpellState): Spell[] {
+        return this.state.spells.filter(spell => spell.state === state);
     }
 }

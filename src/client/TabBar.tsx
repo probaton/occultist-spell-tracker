@@ -1,11 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+
+import Tab from "./Tab";
 
 import { SpellState } from "../spells/SpellState";
-import Tab from "./Tab";
 
 interface IProps {
     onTabPress: (selectedTab: SpellState) => void;
+    onAddPress: () => void;
 }
 
 interface IState {
@@ -24,6 +26,14 @@ export default class TabBar extends React.Component<IProps, IState> {
                 <Tab caption="Active" tabName="active" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
                 <Tab caption="Recharge" tabName="recharge" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
                 <Tab caption="Inactive" tabName="inactive" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
+                <TouchableOpacity onPress={this.props.onAddPress}>
+                    <Image
+                        style={styles.plus}
+                        source={require("./images/Add.png")}
+                        resizeMode="contain"
+                        resizeMethod="scale"
+                    />
+                </TouchableOpacity>
             </View>
         );
     }
@@ -38,5 +48,8 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         paddingTop: 24,
+    },
+    plus: {
+        width: 32,
     },
 });

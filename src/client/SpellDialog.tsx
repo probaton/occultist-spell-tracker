@@ -25,7 +25,7 @@ interface IState {
     levelValidation?: string;
 }
 
-export class SpellDialog extends React.Component<IProps, IState> {
+export default class SpellDialog extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {

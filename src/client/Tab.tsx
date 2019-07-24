@@ -34,13 +34,13 @@ export default class Tab extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
     activeTab: {
-        width: Dimensions.get("window").width / 3,
+        width: Dimensions.get("window").width / 100 * 30,
         alignItems: "center",
         backgroundColor: "white",
         padding: 8,
     },
     passiveTab: {
-        width: Dimensions.get("window").width / 3,
+        width: Dimensions.get("window").width / 100 * 30,
         alignItems: "center",
         padding: 8,
     },
