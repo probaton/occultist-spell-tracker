@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, StyleSheet, View } from "react-native";
 
-
 import ListItem from "./ListItem";
 import { SpellDialog } from "./SpellDialog";
 
@@ -27,6 +26,13 @@ export default class Home extends React.Component<any, IState> {
     }
 
     render() {
+        switch (this.state.viewState) {
+            case ("createSpell"): return <SpellDialog close={this.closeDialogs}/>;
+            default: return this.renderContent();
+        }
+    }
+
+    private renderContent() {
         return (
             <>
                 <View style={styles.topBar}>
@@ -34,16 +40,9 @@ export default class Home extends React.Component<any, IState> {
                     <Button title="List" onPress={async () => console.log(">>> spells", await SpellStore.get())}/>
                     <Button title="Clear" onPress={() => SpellStore.clear()}/>
                 </View>
-                {this.renderContent()}
+                {this.renderItems()}
             </>
         );
-    }
-
-    private renderContent() {
-        switch (this.state.viewState) {
-            case ("createSpell"): return <SpellDialog close={this.closeDialogs}/>;
-             default: return this.renderItems();
-        }
     }
 
     private renderItems() {
