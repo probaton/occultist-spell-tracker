@@ -1,12 +1,13 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { ActiveTab } from "./ActiveTab";
+
+import { SpellState } from "../spells/SpellState";
 
 interface IProps {
     caption: string;
-    tabName: ActiveTab;
-    activeTab: ActiveTab;
-    onPress: (tab: ActiveTab) => void;
+    tabName: SpellState;
+    activeTab: SpellState;
+    onPress: (tab: SpellState) => void;
 }
 
 export default class Tab extends React.Component<IProps> {

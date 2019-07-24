@@ -1,14 +1,15 @@
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
-import { ActiveTab } from "./ActiveTab";
+import { StyleSheet, View } from "react-native";
+
+import { SpellState } from "../spells/SpellState";
 import Tab from "./Tab";
 
 interface IProps {
-    onTabPress: (selectedTab: ActiveTab) => void;
+    onTabPress: (selectedTab: SpellState) => void;
 }
 
 interface IState {
-    activeTab: ActiveTab;
+    activeTab: SpellState;
 }
 
 export default class TabBar extends React.Component<IProps, IState> {
@@ -27,7 +28,7 @@ export default class TabBar extends React.Component<IProps, IState> {
         );
     }
 
-    private onTabPress = (tab: ActiveTab) => {
+    private onTabPress = (tab: SpellState) => {
         this.props.onTabPress(tab);
         this.setState({ activeTab: tab });
     }

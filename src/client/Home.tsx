@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 
-import { ActiveTab } from "./ActiveTab";
+import { SpellState } from "../spells/SpellState";
 import ListItem from "./ListItem";
 import { SpellDialog } from "./SpellDialog";
 
@@ -14,7 +14,7 @@ interface IState {
     viewState: "createSpell" | undefined;
     spells: Spell[];
     loading: boolean;
-    activeTab: ActiveTab;
+    activeTab: SpellState;
 }
 
 export default class Home extends React.Component<any, IState> {
@@ -68,7 +68,7 @@ export default class Home extends React.Component<any, IState> {
         this.setState({ viewState: undefined });
     }
 
-    private selectTab = (tab: ActiveTab) => {
+    private selectTab = (tab: SpellState) => {
         this.setState({ activeTab: tab });
     }
 

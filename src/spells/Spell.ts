@@ -1,7 +1,9 @@
 import uuid from "../helpers/uuid";
+import { SpellState } from "../spells/SpellState";
 
 export default class Spell {
     id: string;
+    state: SpellState;
     name: string;
     trigger: string;
     effect: string;
@@ -18,6 +20,7 @@ export default class Spell {
         level: number,
     ) {
         this.id = uuid();
+        this.state = "inactive";
         this.name = name;
         this.trigger = trigger;
         this.effect = effect;
