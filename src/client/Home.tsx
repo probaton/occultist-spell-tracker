@@ -1,16 +1,19 @@
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
+import { ActiveTab } from "./ActiveTab";
 import ListItem from "./ListItem";
 import { SpellDialog } from "./SpellDialog";
 
 import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
+import TabBar from "./TabBar";
 
 interface IState {
     viewState: "createSpell" | undefined;
     spells: Spell[];
     loading: boolean;
+    activeTab: ActiveTab;
 }
 
 export default class Home extends React.Component<any, IState> {
@@ -20,6 +23,7 @@ export default class Home extends React.Component<any, IState> {
             loading: true,
             viewState: undefined,
             spells: [],
+            activeTab: "active",
         };
     }
 
@@ -37,11 +41,7 @@ export default class Home extends React.Component<any, IState> {
     private renderContent() {
         return (
             <>
-                <View style={styles.topBar}>
-                    <Button title="New" onPress={() => this.setState({ viewState: "createSpell" })}/>
-                    <Button title="List" onPress={async () => console.log(">>> spells", await SpellStore.get())}/>
-                    <Button title="Clear" onPress={() => SpellStore.clear()}/>
-                </View>
+                <TabBar onTabPress={this.selectTab}/>
                 {this.props.loading ? null : this.renderItems()}
             </>
         );
@@ -55,16 +55,12 @@ export default class Home extends React.Component<any, IState> {
         this.setState({ viewState: undefined });
     }
 
+    private selectTab = (tab: ActiveTab) => {
+        this.setState({ activeTab: tab });
+    }
+
     private refreshSpells = async () => {
         this.setState({ loading: true });
         this.setState({ loading: false, spells: await SpellStore.get() });
     }
 }
-
-const styles = StyleSheet.create({
-    topBar: {
-        backgroundColor: "#4f8973ff",
-        maxHeight: 100,
-        flex: 1,
-    },
-});

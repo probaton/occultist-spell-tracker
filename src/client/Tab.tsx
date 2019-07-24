@@ -1,0 +1,50 @@
+import React from "react";
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ActiveTab } from "./ActiveTab";
+
+interface IProps {
+    caption: string;
+    tabName: ActiveTab;
+    activeTab: ActiveTab;
+    onPress: (tab: ActiveTab) => void;
+}
+
+export default class Tab extends React.Component<IProps> {
+    constructor(props: IProps) {
+        super(props);
+        this.state = { activeTab: "active" };
+    }
+
+    render() {
+        const { caption, activeTab, tabName } = this.props;
+
+        return (
+            <TouchableOpacity onPress={this.onPress} style={tabName === activeTab ? styles.activeTab : styles.passiveTab}>
+                <Text style={styles.caption}>{caption}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    private onPress = () => {
+        const { tabName, onPress } = this.props;
+        onPress(tabName);
+    }
+}
+
+const styles = StyleSheet.create({
+    activeTab: {
+        width: Dimensions.get("window").width / 3,
+        alignItems: "center",
+        backgroundColor: "white",
+        padding: 8,
+    },
+    passiveTab: {
+        width: Dimensions.get("window").width / 3,
+        alignItems: "center",
+        padding: 8,
+    },
+    caption: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+});
