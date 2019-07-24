@@ -10,24 +10,26 @@ import SpellStore from "../store/SpellStore";
 interface IState {
     viewState: "createSpell" | undefined;
     spells: Spell[];
+    loading: boolean;
 }
 
 export default class Home extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            loading: true,
             viewState: undefined,
             spells: [],
         };
     }
 
     async componentDidMount() {
-        this.setState({ spells: await SpellStore.get() });
+        this.refreshSpells();
     }
 
     render() {
         switch (this.state.viewState) {
-            case ("createSpell"): return <SpellDialog close={this.closeDialogs}/>;
+            case ("createSpell"): return <SpellDialog onSubmit={this.refreshSpells} close={this.closeDialogs}/>;
             default: return this.renderContent();
         }
     }
@@ -40,7 +42,7 @@ export default class Home extends React.Component<any, IState> {
                     <Button title="List" onPress={async () => console.log(">>> spells", await SpellStore.get())}/>
                     <Button title="Clear" onPress={() => SpellStore.clear()}/>
                 </View>
-                {this.renderItems()}
+                {this.props.loading ? null : this.renderItems()}
             </>
         );
     }
@@ -51,6 +53,11 @@ export default class Home extends React.Component<any, IState> {
 
     private closeDialogs = () => {
         this.setState({ viewState: undefined });
+    }
+
+    private refreshSpells = async () => {
+        this.setState({ loading: true });
+        this.setState({ loading: false, spells: await SpellStore.get() });
     }
 }
 

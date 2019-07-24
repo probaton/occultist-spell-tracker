@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { TextInput } from "react-native";
 
 import Input from "./controls/Input";
 import Interaction from "./Interaction";
@@ -8,6 +8,7 @@ import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
 
 interface IProps {
+    onSubmit?: () => void;
     close: () => void;
 }
 
@@ -116,7 +117,10 @@ export class SpellDialog extends React.Component<IProps, IState> {
 
         this.setState(validationState);
         if (!Object.keys(validationState).some(key => validationState[key] !== undefined)) {
-            SpellStore.add(new Spell(name, this.state.triggerInput, this.state.effectInput, recharge!, retainFocus!, level!));
+            await SpellStore.add(new Spell(name, this.state.triggerInput, this.state.effectInput, recharge!, retainFocus!, level!));
+            if (this.props.onSubmit) {
+                this.props.onSubmit();
+            }
             this.props.close();
         }
     }
@@ -126,39 +130,3 @@ export class SpellDialog extends React.Component<IProps, IState> {
         return (Number.isInteger(numberValue) || numberValue < 1) ? numberValue : undefined;
     }
 }
-
-const styles = StyleSheet.create({
-    gearTypeToggle: {
-        margin: 8,
-        flexDirection: "row",
-        borderColor: "#009688",
-        borderRadius: 5,
-        borderWidth: 2,
-    },
-    activeToggle: {
-        minWidth: 64,
-        height: 36,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#009688",
-    },
-    passiveToggle: {
-        minWidth: 64,
-        height: 36,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#F9F9F9",
-    },
-    activeToggleText: {
-        fontSize: 18,
-        textAlign: "center",
-        color: "#F9F9F9",
-        padding: 12,
-    },
-    passiveToggleText: {
-        fontSize: 18,
-        textAlign: "center",
-        color: "#009688",
-        padding: 12,
-    },
-});
