@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Text } from "react-native";
 
 import { ActiveTab } from "./ActiveTab";
 import ListItem from "./ListItem";
@@ -7,6 +7,7 @@ import { SpellDialog } from "./SpellDialog";
 
 import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
+import List from "./List";
 import TabBar from "./TabBar";
 
 interface IState {
@@ -42,13 +43,25 @@ export default class Home extends React.Component<any, IState> {
         return (
             <>
                 <TabBar onTabPress={this.selectTab}/>
-                {this.props.loading ? null : this.renderItems()}
+                {this.props.loading ? null : this.renderList()}
             </>
         );
     }
 
-    private renderItems() {
-        return this.state.spells.map(spell => <ListItem key={spell.id} spell={spell}/>);
+    private renderList() {
+        switch (this.state.activeTab) {
+            case ("active"): return <List items={this.state.spells} renderItem={this.renderItem}/>;
+            case ("recharge"): return <List items={this.state.spells} renderItem={this.renderWtf}/>;
+            case ("inactive"): return <List items={this.state.spells} renderItem={this.renderWtf}/>;
+        }
+    }
+
+    private renderItem = (item: Spell) => {
+        return <ListItem key={item.id} spell={item}/>;
+    }
+
+    private renderWtf = (item: Spell) => {
+        return <Text key={item.id}>wtf</Text>;
     }
 
     private closeDialogs = () => {
