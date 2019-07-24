@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { Dimensions, KeyboardTypeOptions, ReturnKeyTypeOptions, StyleSheet, Text, TextInput } from "react-native";
 
 interface IProps {
@@ -9,9 +9,9 @@ interface IProps {
     placeholder?: string;
     onSubmitEditing?: () => void;
     inputRef?: React.RefObject<TextInput>;
-    returnKeyType?: ReturnKeyTypeOptions;
     stayOpenOnSubmit?: boolean;
     validationMessage?: string;
+    nextFocus?: RefObject<TextInput>;
 }
 
 interface IState {
@@ -25,7 +25,9 @@ export default class Input extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { onChangeText, autoFocus, keyboardType, placeholder, dark, inputRef, onSubmitEditing, returnKeyType, stayOpenOnSubmit } = this.props;
+        const { onChangeText, autoFocus, keyboardType, placeholder, dark, inputRef, onSubmitEditing, nextFocus, stayOpenOnSubmit } = this.props;
+        const returnKeyType = nextFocus ? "next" : onSubmitEditing ? "done" : "default";
+
         return (
             <>
                 <TextInput
@@ -34,7 +36,7 @@ export default class Input extends React.Component<IProps, IState> {
                     autoFocus={autoFocus}
                     keyboardType={keyboardType}
                     placeholder={placeholder}
-                    onSubmitEditing={onSubmitEditing}
+                    onSubmitEditing={this.onSubmitEditing}
                     ref={inputRef}
                     returnKeyType={returnKeyType || "default"}
                     blurOnSubmit={!stayOpenOnSubmit}
@@ -50,6 +52,16 @@ export default class Input extends React.Component<IProps, IState> {
             return <Text style={styles.validationMessage}>{this.props.validationMessage}</Text>;
         } else {
             return null;
+        }
+    }
+
+    private onSubmitEditing = () => {
+        const { nextFocus: focusNext, onSubmitEditing } = this.props;
+        if (focusNext && focusNext.current) {
+            focusNext.current.focus();
+        }
+        if (onSubmitEditing) {
+            onSubmitEditing();
         }
     }
 }

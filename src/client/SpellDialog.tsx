@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 
 import Input from "./controls/Input";
 import Interaction from "./Interaction";
@@ -38,6 +38,12 @@ export class SpellDialog extends React.Component<IProps, IState> {
     }
 
     render() {
+        const triggerInputRef = React.createRef<TextInput>();
+        const effectInputRef = React.createRef<TextInput>();
+        const rechargeInputRef = React.createRef<TextInput>();
+        const retainFocusInputRef = React.createRef<TextInput>();
+        const levelInputRef = React.createRef<TextInput>();
+
         return (
             <Interaction
                 dialogTitle="Edit spell"
@@ -48,29 +54,40 @@ export class SpellDialog extends React.Component<IProps, IState> {
                     placeholder="Spell name"
                     onChangeText={nameInput => this.setState({ nameInput })}
                     validationMessage={this.state.nameValidation}
+                    nextFocus={triggerInputRef}
                 />
                 <Input
                     placeholder="Trigger"
                     onChangeText={triggerInput => this.setState({ triggerInput })}
+                    inputRef={triggerInputRef}
+                    nextFocus={effectInputRef}
                 />
                 <Input
                     placeholder="Effect"
                     onChangeText={effectInput => this.setState({ effectInput })}
+                    inputRef={effectInputRef}
+                    nextFocus={rechargeInputRef}
                 />
                 <Input
                     placeholder="Recharge"
                     onChangeText={rechargeInput => this.setState({ rechargeInput })}
                     validationMessage={this.state.rechargeValidation}
+                    inputRef={rechargeInputRef}
+                    nextFocus={retainFocusInputRef}
                 />
                 <Input
                     placeholder="Retain focus"
                     onChangeText={retainFocusInput => this.setState({ retainFocusInput })}
                     validationMessage={this.state.retainFocusValidation}
+                    inputRef={retainFocusInputRef}
+                    nextFocus={levelInputRef}
                 />
                 <Input
                     placeholder="Spell level"
                     onChangeText={levelInput => this.setState({ levelInput })}
                     validationMessage={this.state.levelValidation}
+                    inputRef={levelInputRef}
+                    onSubmitEditing={this.submitSpell}
                 />
             </Interaction>
         );
