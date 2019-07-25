@@ -33,7 +33,7 @@ export default abstract class SpellStore {
         this.set(spells.filter(o => o.name !== name));
     }
 
-    private static set(spells: Spell[]): void {
+    static set(spells: Spell[]): void {
         this.store().set(JSON.stringify(spells));
     }
 

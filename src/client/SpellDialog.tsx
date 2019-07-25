@@ -1,9 +1,10 @@
 import React from "react";
-import { TextInput } from "react-native";
+import { Alert, Button, TextInput } from "react-native";
 
 import Input from "./controls/Input";
 import Interaction from "./Interaction";
 
+import { importSpells } from "../spells/importSpells";
 import Spell from "../spells/Spell";
 import SpellStore from "../store/SpellStore";
 
@@ -51,6 +52,7 @@ export default class SpellDialog extends React.Component<IProps, IState> {
                 onSubmit={this.submitSpell}
                 close={this.props.close}
             >
+                <Button title="Import" onPress={this.importSpells}/>
                 <Input
                     placeholder="Spell name"
                     onChangeText={nameInput => this.setState({ nameInput })}
@@ -92,6 +94,12 @@ export default class SpellDialog extends React.Component<IProps, IState> {
                 />
             </Interaction>
         );
+    }
+
+    private importSpells = async () => {
+        await SpellStore.set(await importSpells());
+        Alert.alert("Info", "Import successful");
+        this.props.close();
     }
 
     private submitSpell = async () => {
