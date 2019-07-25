@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
 
 import Spell from "../spells/Spell";
 
@@ -12,12 +12,12 @@ export default class List extends React.Component<IProps> {
     render() {
         return (
             <>
-                {this.renderItems()}
+                {this.renderContent()}
             </>
         );
     }
 
-    private renderItems() {
+    private renderContent() {
         const items = this.props.items;
         if (items.length === 0) {
             return (
@@ -26,7 +26,17 @@ export default class List extends React.Component<IProps> {
                 </View>
             );
         }
-        return items.map(item => this.props.renderItem(item));
+        return (
+            <FlatList
+                keyExtractor={item => item.id}
+                data={this.props.items}
+                renderItem={this.renderItem}
+            />
+        );
+    }
+
+    private renderItem = (info: ListRenderItemInfo<Spell>) => {
+        return this.props.renderItem(info.item);
     }
 }
 

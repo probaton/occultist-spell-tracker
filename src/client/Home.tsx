@@ -51,17 +51,13 @@ export default class Home extends React.Component<any, IState> {
     private renderList() {
         switch (this.state.activeTab) {
             case ("active"): return <List items={this.filterSpellsByState("active")} renderItem={this.renderItem}/>;
-            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderWtf}/>;
-            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderWtf}/>;
+            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderItem}/>;
+            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderItem}/>;
         }
     }
 
     private renderItem = (item: Spell) => {
-        return <ListItem key={item.id} spell={item}/>;
-    }
-
-    private renderWtf = (item: Spell) => {
-        return <Text key={item.id}>wtf</Text>;
+        return <ListItem spell={item} updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}/>;
     }
 
     private closeDialogs = () => {
