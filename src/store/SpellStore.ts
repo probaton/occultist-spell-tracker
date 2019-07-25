@@ -17,6 +17,17 @@ export default abstract class SpellStore {
         }
     }
 
+    static async update(spell: Spell): Promise<Spell[]> {
+        const spells = await this.get();
+        const spellIndex = spells.findIndex(s => s.id === spell.id);
+        if (spellIndex === -1) {
+            throw new Error("Spell does not exist");
+        }
+        spells[spellIndex] = spell;
+        await this.set(spells);
+        return spells;
+    }
+
     static async remove(name: string): Promise<void> {
         const spells = await this.get();
         this.set(spells.filter(o => o.name !== name));
