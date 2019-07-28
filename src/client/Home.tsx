@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import List from "./List";
 import ListItem from "./ListItem";
@@ -71,7 +71,12 @@ export default class Home extends React.Component<any, IState> {
     private activeItemContent = (spell: Spell) => {
         return (
             <>
-                <Text style={styles.name}>{spell.name}</Text>
+                <View style={styles.titleBar}>
+                    <Text style={styles.name}>{spell.name}</Text>
+                    <View style={styles.rightContainer}>
+                        <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
+                    </View>
+                </View>
                 <Text style={styles.trigger}>{spell.trigger}</Text>
             </>
         );
@@ -79,10 +84,12 @@ export default class Home extends React.Component<any, IState> {
 
     private rechargeItemContent = (spell: Spell) => {
         return (
-            <>
-                <Text style={styles.name}>{spell.name}</Text>
-                <Text style={styles.trigger}>{spell.trigger}</Text>
-            </>
+                <View style={styles.titleBar}>
+                    <Text style={styles.name}>{spell.name}</Text>
+                    <View style={styles.rightContainer}>
+                        <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
+                    </View>
+                </View>
         );
     }
 
@@ -111,15 +118,32 @@ export default class Home extends React.Component<any, IState> {
     private filterSpellsByState(state: SpellState): Spell[] {
         return this.state.spells.filter(spell => spell.state === state);
     }
+
+    private rechargeText(spell: Spell): string {
+        return spell.recharge === 0 ? "At will" : spell.recharge + "+";
+    }
 }
 
 const styles = StyleSheet.create({
+    titleBar: {
+        flexDirection: "row",
+    },
     name: {
         fontWeight: "bold",
         fontSize: 20,
         color: "#000000",
     },
+    recharge: {
+        textAlign: "right",
+        justifyContent: "flex-end",
+        fontSize: 16,
+    },
     trigger: {
 
+    },
+    rightContainer: {
+      flex: 1,
+      flexDirection: "row",
+      justifyContent: "flex-end",
     },
 });
