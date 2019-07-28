@@ -6,6 +6,9 @@ export default class Spell {
     state: SpellState;
     name: string;
     trigger: string;
+    target: string;
+    attack: string;
+    miss: string;
     effect: string;
     retainFocus: number;
     recharge: number;
@@ -14,6 +17,9 @@ export default class Spell {
     constructor(
         name: string,
         trigger: string,
+        target: string,
+        attack: string,
+        miss: string,
         effect: string,
         retainFocus: number,
         recharge: number,
@@ -23,6 +29,9 @@ export default class Spell {
         this.state = "inactive";
         this.name = name;
         this.trigger = trigger;
+        this.target = target;
+        this.attack = attack;
+        this.miss = miss;
         this.effect = effect;
         this.retainFocus = retainFocus;
         this.recharge = recharge;
