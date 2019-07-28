@@ -50,23 +50,43 @@ export default class Home extends React.Component<any, IState> {
 
     private renderList() {
         switch (this.state.activeTab) {
-            case ("active"): return <List items={this.filterSpellsByState("active")} renderItem={this.renderItem}/>;
-            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderItem}/>;
-            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderItem}/>;
+            case ("active"): return <List items={this.filterSpellsByState("active")} renderItem={this.renderItem(this.activeItemContent)}/>;
+            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderItem(this.rechargeItemContent)}/>;
+            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderItem(this.inactiveItemContent)}/>;
         }
     }
 
-    private renderItem = (item: Spell) => {
+    private renderItem(itemContent: (spell: Spell) => void) {
+        return (item: Spell) => {
+            return (
+                <ListItem
+                    spell={item}
+                    updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}
+                    renderContent={itemContent}
+                />
+            );
+        };
+    }
+
+    private activeItemContent = (spell: Spell) => {
         return (
-            <ListItem
-                spell={item}
-                updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}
-                renderContent={this.renderActiveItemContent}
-            />
+            <>
+                <Text style={styles.name}>{spell.name}</Text>
+                <Text style={styles.trigger}>{spell.trigger}</Text>
+            </>
         );
     }
 
-    private renderActiveItemContent = (spell: Spell) => {
+    private rechargeItemContent = (spell: Spell) => {
+        return (
+            <>
+                <Text style={styles.name}>{spell.name}</Text>
+                <Text style={styles.trigger}>{spell.trigger}</Text>
+            </>
+        );
+    }
+
+    private inactiveItemContent = (spell: Spell) => {
         return (
             <>
                 <Text style={styles.name}>{spell.name}</Text>
