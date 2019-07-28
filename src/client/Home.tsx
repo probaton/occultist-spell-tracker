@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 import List from "./List";
 import ListItem from "./ListItem";
@@ -57,7 +57,22 @@ export default class Home extends React.Component<any, IState> {
     }
 
     private renderItem = (item: Spell) => {
-        return <ListItem spell={item} updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}/>;
+        return (
+            <ListItem
+                spell={item}
+                updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}
+                renderContent={this.renderActiveItemContent}
+            />
+        );
+    }
+
+    private renderActiveItemContent = (spell: Spell) => {
+        return (
+            <>
+                <Text style={styles.name}>{spell.name}</Text>
+                <Text style={styles.trigger}>{spell.trigger}</Text>
+            </>
+        );
     }
 
     private closeDialogs = () => {
@@ -77,3 +92,14 @@ export default class Home extends React.Component<any, IState> {
         return this.state.spells.filter(spell => spell.state === state);
     }
 }
+
+const styles = StyleSheet.create({
+    name: {
+        fontWeight: "bold",
+        fontSize: 20,
+        color: "#000000",
+    },
+    trigger: {
+
+    },
+});

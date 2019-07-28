@@ -1,4 +1,5 @@
 import React from "react";
+
 import { FlatList, ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
 
 import Spell from "../spells/Spell";

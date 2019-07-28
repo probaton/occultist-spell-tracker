@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     activeTab: {
         width: Dimensions.get("window").width / 100 * 30,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: "#7A0002",
         padding: 8,
     },
     passiveTab: {
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     caption: {
         fontSize: 16,
         fontWeight: "bold",
+        color: "#FFFFFF",
     },
 });

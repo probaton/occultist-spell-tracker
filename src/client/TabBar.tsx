@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         paddingTop: 24,
+        backgroundColor: "#C70909",
     },
     plus: {
         width: 32,

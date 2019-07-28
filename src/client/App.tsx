@@ -45,7 +45,7 @@ export default class App extends React.Component<any, IAppState> {
 
 const styles = StyleSheet.create({
     body: {
-        backgroundColor: "#78ceae",
+        backgroundColor: "#FFFFFF",
         flex: 1,
     },
     container: {
