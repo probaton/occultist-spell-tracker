@@ -40,9 +40,5 @@ export default abstract class SpellStore {
     private static store(): StoreItem {
         return new StoreItem("spells");
     }
-
-    static async clear() {
-        this.store().clear();
-    }
 }
 
