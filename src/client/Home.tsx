@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 
 import List from "./List";
 import ListItem from "./ListItem";
 import SpellDialog from "./SpellDialog";
+import SpellView from "./SpellView";
 import TabBar from "./TabBar";
 
 import Spell from "../spells/Spell";
@@ -11,10 +12,11 @@ import { SpellState } from "../spells/SpellState";
 import SpellStore from "../store/SpellStore";
 
 interface IState {
-    viewState: "createSpell" | undefined;
+    viewState: "createSpell" | "viewSpell" | undefined;
     spells: Spell[];
     loading: boolean;
     activeTab: SpellState;
+    selectedSpell?: Spell;
 }
 
 export default class Home extends React.Component<any, IState> {
@@ -35,6 +37,7 @@ export default class Home extends React.Component<any, IState> {
     render() {
         switch (this.state.viewState) {
             case ("createSpell"): return <SpellDialog onSubmit={this.refreshSpells} close={this.closeDialogs}/>;
+            case ("viewSpell"): return this.renderSpellView(this.state.selectedSpell);
             default: return this.renderContent();
         }
     }
@@ -56,13 +59,22 @@ export default class Home extends React.Component<any, IState> {
         }
     }
 
-    private renderItem(itemContent: (spell: Spell) => void) {
+    private renderSpellView = (spell?: Spell) => {
+        if (!spell) {
+            Alert.alert("No spell selected");
+        } else {
+            return <SpellView spell={spell} close={this.closeDialogs}/>;
+        }
+    }
+
+    private renderItem(itemContent: (spell: Spell) => React.ReactNode) {
         return (item: Spell) => {
             return (
                 <ListItem
                     spell={item}
                     updateSpells={(updatedSpells) => this.setState({ spells: updatedSpells })}
                     renderContent={itemContent}
+                    openSpellView={this.openSpellView}
                 />
             );
         };
@@ -77,7 +89,7 @@ export default class Home extends React.Component<any, IState> {
                         <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
                     </View>
                 </View>
-                <Text style={styles.bodyText}>{spell.trigger}</Text>
+                <Text>{spell.trigger}</Text>
             </>
         );
     }
@@ -97,9 +109,16 @@ export default class Home extends React.Component<any, IState> {
         return (
             <>
                 <Text style={styles.title}>{spell.name}</Text>
-                <Text style={styles.bodyText}>{spell.effect}</Text>
+                <Text>{spell.effect}</Text>
             </>
         );
+    }
+
+    private openSpellView = (spell: Spell) => {
+        this.setState({
+            selectedSpell: spell,
+            viewState: "viewSpell",
+        });
     }
 
     private closeDialogs = () => {
@@ -137,9 +156,6 @@ const styles = StyleSheet.create({
         textAlign: "right",
         justifyContent: "flex-end",
         fontSize: 16,
-    },
-    bodyText: {
-
     },
     rechargeContainer: {
       flex: 1,

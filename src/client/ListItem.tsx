@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, PanResponder, StyleSheet, Text } from "react-native";
+import { Animated, PanResponder, StyleSheet, TouchableOpacity } from "react-native";
 
 import Spell from "../spells/Spell";
 import { SpellState } from "../spells/SpellState";
@@ -8,7 +8,8 @@ import SpellStore from "../store/SpellStore";
 interface IProps {
     spell: Spell;
     updateSpells: (updatedSpells: Spell[]) => void;
-    renderContent: (spell: Spell) => void;
+    renderContent: (spell: Spell) => React.ReactNode;
+    openSpellView: (spell: Spell) => void;
 }
 
 export default class ListItem extends React.Component<IProps> {
@@ -21,10 +22,10 @@ export default class ListItem extends React.Component<IProps> {
             onMoveShouldSetPanResponder: (event, gestureState) => true,
             onPanResponderTerminationRequest: (event, gestureState) => false,
             onPanResponderRelease: (event, gestureState) => {
-                if (gestureState.dx > 0) {
+                if (gestureState.dx > 100) {
                     this.swipeRight(this.props.spell);
                 }
-                if (gestureState.dx < 0) {
+                if (gestureState.dx < -100) {
                     this.swipeLeft(this.props.spell);
                 }
             },
@@ -34,7 +35,9 @@ export default class ListItem extends React.Component<IProps> {
     render() {
         return (
                 <Animated.View style={styles.container}{...this.swipeResponder.panHandlers}>
-                    {this.props.renderContent(this.props.spell)}
+                    <TouchableOpacity onPress={this.openSpellView}>
+                        {this.props.renderContent(this.props.spell)}
+                    </TouchableOpacity>
                 </Animated.View>
         );
     }
@@ -63,6 +66,10 @@ export default class ListItem extends React.Component<IProps> {
             case "recharge": return "active";
             case "inactive": return "recharge";
         }
+    }
+
+    private openSpellView = () => {
+        this.props.openSpellView(this.props.spell);
     }
 }
 
