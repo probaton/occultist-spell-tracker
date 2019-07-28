@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 import Interaction from "./Interaction";
 
@@ -18,8 +18,29 @@ export default class SpellView extends React.Component<IProps> {
                 dialogTitle={spell.name}
                 close={close}
             >
+                <Text style={styles.label}>Trigger</Text>
+                <Text>{spell.trigger}</Text>
+                <Text style={styles.label}>Target</Text>
+                <Text>{spell.target}</Text>
+                <Text style={styles.label}>Attack</Text>
+                <Text>{spell.attack}</Text>
+                <Text style={styles.label}>Effect</Text>
                 <Text>{spell.effect}</Text>
+                <Text style={styles.label}>Miss</Text>
+                <Text>{spell.miss}</Text>
+                <Text style={styles.label}>Recharge</Text>
+                <Text>{spell.recharge}</Text>
+                <Text style={styles.label}>Retain Focus</Text>
+                <Text>{spell.retainFocus}</Text>
+                <Text style={styles.label}>Spell Level</Text>
+                <Text>{spell.level}</Text>
             </Interaction>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    label: {
+        fontWeight: "bold",
+    },
+});

@@ -9,12 +9,11 @@ interface IProps {
     close: () => void;
     onSubmit?: () => void;
     loading?: boolean;
-    isResolvedMessage?: string;
 }
 
 export default class Interaction extends React.Component<IProps> {
     render() {
-        const { dialogTitle, close, loading, isResolvedMessage } = this.props;
+        const { dialogTitle, close, loading, children } = this.props;
         return (
             <View
                 style={styles.container}
@@ -31,13 +30,12 @@ export default class Interaction extends React.Component<IProps> {
                     <View style={styles.body}>
                         {loading
                             ? this.renderLoadingSpinner()
-                            : this.renderContent()
-                        }
+                            : children                        }
                     </View>
                     <View style={styles.buttonBar}>
                         <TouchButton
                             onPress={close}
-                            caption={isResolvedMessage ? "OK" : "CANCEL"}
+                            caption="OK"
                             buttonStyle={styles.button}
                             captionStyle={styles.buttonText}
                         />
@@ -58,19 +56,9 @@ export default class Interaction extends React.Component<IProps> {
         );
     }
 
-    private renderContent() {
-        const { children, isResolvedMessage } = this.props;
-        return (
-            <>
-                <Text style={styles.text}>{isResolvedMessage}</Text>
-                {isResolvedMessage ? null : children}
-            </>
-        );
-    }
-
     private renderSubmitButton() {
-        const { onSubmit, loading, isResolvedMessage } = this.props;
-        if (isResolvedMessage || loading || !onSubmit) {
+        const { onSubmit, loading } = this.props;
+        if (loading || !onSubmit) {
             return null;
         } else {
             return (
@@ -88,10 +76,6 @@ export default class Interaction extends React.Component<IProps> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#F9F9F9",
-        borderRadius: 5,
-        elevation: 2,
-        margin: 8,
     },
     padding: {
         flex: 1,
@@ -103,25 +87,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     titleBar: {
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        paddingTop: 24,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#EDECEE",
-        minHeight: 55,
+        backgroundColor: "#C70909",
+        paddingBottom: 8,
     },
     title: {
         fontWeight: "bold",
-        fontSize: 32,
-        color: "#6e6976ff",
+        fontSize: 24,
+        color: "#FFFFFF",
     },
     xButton: {
         position: "absolute",
         right: 12,
-    },
-    text: {
-        color: "#34313A",
-        textAlign: "center",
+        paddingTop: 16,
     },
     spinner: {
         marginTop: 15,
@@ -144,7 +124,6 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 24,
         textAlign: "center",
-        color: "#009688",
         padding: 12,
     },
 });

@@ -26,7 +26,7 @@ export default class TabBar extends React.Component<IProps, IState> {
                 <Tab caption="Active" tabName="active" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
                 <Tab caption="Recharge" tabName="recharge" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
                 <Tab caption="Inactive" tabName="inactive" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
-                <TouchableOpacity onPress={this.props.onAddPress}>
+                <TouchableOpacity style={styles.plusButton} onPress={this.props.onAddPress}>
                     <Image
                         style={styles.plus}
                         source={require("./images/Add.png")}
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingTop: 24,
         backgroundColor: "#C70909",
+    },
+    plusButton: {
+        flex: 1,
+        alignItems: "center",
+        marginTop: -6,
     },
     plus: {
         width: 32,
