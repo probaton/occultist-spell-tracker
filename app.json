@@ -11,7 +11,7 @@
         "splash": {
         "image": "./assets/androidIcon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#78ceae"
+        "backgroundColor": "#C70909"
         },
             "updates": {
             "fallbackToCacheTimeout": 0
@@ -27,6 +27,6 @@
         "ios": {
             "supportsTablet": true
         },
-        "primaryColor": "#78ceae"
+        "primaryColor": "#C70909"
     }
 }
