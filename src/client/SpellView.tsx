@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     divider: {
+        color: "#DDDDDD",
         textAlign: "center",
         marginBottom: 12,
         fontWeight: "normal",

@@ -76,7 +76,7 @@ export default class ListItem extends React.Component<IProps> {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFFFFF",
-        borderColor: "#919191",
+        borderColor: "#DDDDDD",
         borderBottomWidth: 1,
         paddingLeft: 12,
         paddingRight: 12,
