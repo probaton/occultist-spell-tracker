@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import Interaction from "./Interaction";
 
+import { generateRechargeText } from "../helpers/spellHelpers";
 import Spell from "../spells/Spell";
 
 interface IProps {
@@ -22,18 +23,32 @@ export default class SpellView extends React.Component<IProps> {
                 <Text>{spell.trigger}</Text>
                 <Text style={styles.label}>Target</Text>
                 <Text>{spell.target}</Text>
+
+                <Text style={styles.divider}>___________________________</Text>
+
                 <Text style={styles.label}>Attack</Text>
                 <Text>{spell.attack}</Text>
                 <Text style={styles.label}>Effect</Text>
                 <Text>{spell.effect}</Text>
                 <Text style={styles.label}>Miss</Text>
                 <Text>{spell.miss}</Text>
-                <Text style={styles.label}>Recharge</Text>
-                <Text>{spell.recharge}</Text>
-                <Text style={styles.label}>Retain Focus</Text>
-                <Text>{spell.retainFocus}</Text>
-                <Text style={styles.label}>Spell Level</Text>
-                <Text>{spell.level}</Text>
+
+                <Text style={styles.divider}>___________________________</Text>
+
+                <View style={styles.statBar}>
+                    <View style={styles.stat}>
+                        <Text style={styles.label}>Recharge</Text>
+                        <Text>{generateRechargeText(spell)}</Text>
+                    </View>
+                    <View style={styles.stat}>
+                        <Text style={styles.label}>Retain Focus</Text>
+                        <Text>{spell.retainFocus}</Text>
+                    </View>
+                    <View style={styles.stat}>
+                        <Text style={styles.label}>Spell Level</Text>
+                        <Text>{spell.level}</Text>
+                    </View>
+                </View>
             </Interaction>
         );
     }
@@ -42,5 +57,18 @@ export default class SpellView extends React.Component<IProps> {
 const styles = StyleSheet.create({
     label: {
         fontWeight: "bold",
+        marginTop: 4,
+    },
+    divider: {
+        textAlign: "center",
+        marginBottom: 12,
+        fontWeight: "normal",
+    },
+    statBar: {
+        flexDirection: "row",
+    },
+    stat: {
+        flex: 1,
+        alignItems: "center",
     },
 });

@@ -7,6 +7,7 @@ import SpellDialog from "./SpellDialog";
 import SpellView from "./SpellView";
 import TabBar from "./TabBar";
 
+import { generateRechargeText } from "../helpers/spellHelpers";
 import Spell from "../spells/Spell";
 import { SpellState } from "../spells/SpellState";
 import SpellStore from "../store/SpellStore";
@@ -86,7 +87,7 @@ export default class Home extends React.Component<any, IState> {
                 <View style={styles.titleBar}>
                     <Text style={styles.title}>{spell.name}</Text>
                     <View style={styles.rechargeContainer}>
-                        <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
+                        <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
                     </View>
                 </View>
                 <Text>{spell.trigger}</Text>
@@ -96,19 +97,24 @@ export default class Home extends React.Component<any, IState> {
 
     private rechargeItemContent = (spell: Spell) => {
         return (
-                <View style={styles.titleBar}>
-                    <Text style={styles.title}>{spell.name}</Text>
-                    <View style={styles.rechargeContainer}>
-                        <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
-                    </View>
+            <View style={styles.titleBar}>
+                <Text style={styles.title}>{spell.name}</Text>
+                <View style={styles.rechargeContainer}>
+                    <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
                 </View>
+            </View>
         );
     }
 
     private inactiveItemContent = (spell: Spell) => {
         return (
             <>
-                <Text style={styles.title}>{spell.name}</Text>
+                <View style={styles.titleBar}>
+                    <Text style={styles.title}>{spell.name}</Text>
+                    <View style={styles.rechargeContainer}>
+                        <Text style={styles.recharge}>{"Level " + spell.level}</Text>
+                    </View>
+                </View>
                 <Text>{spell.effect}</Text>
             </>
         );
@@ -136,10 +142,6 @@ export default class Home extends React.Component<any, IState> {
 
     private filterSpellsByState(state: SpellState): Spell[] {
         return this.state.spells.filter(spell => spell.state === state);
-    }
-
-    private rechargeText(spell: Spell): string {
-        return spell.recharge === 0 ? "At will" : spell.recharge + "+";
     }
 }
 

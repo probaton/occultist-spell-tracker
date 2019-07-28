@@ -11,14 +11,6 @@ interface IProps {
 
 export default class List extends React.Component<IProps> {
     render() {
-        return (
-            <>
-                {this.renderContent()}
-            </>
-        );
-    }
-
-    private renderContent() {
         const items = this.props.items;
         if (items.length === 0) {
             return (

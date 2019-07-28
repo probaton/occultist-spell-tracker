@@ -12,7 +12,7 @@ interface IProps {
 
 export default class Interaction extends React.Component<IProps> {
     render() {
-        const { dialogTitle, close, loading, children } = this.props;
+        const { dialogTitle, close, loading, onSubmit, children } = this.props;
         return (
             <View>
                 <View style={styles.titleBar}>
@@ -24,15 +24,15 @@ export default class Interaction extends React.Component<IProps> {
                     </View>
                 </View>
                 <View style={styles.padding}>
-                    <View style={styles.body}>
+                    <View>
                         {loading
                             ? this.renderLoadingSpinner()
                             : children                        }
                     </View>
-                    <View style={styles.button}>
-                        <Button onPress={close} title="OK" color="#7A0002"/>
-                    </View>
                     {this.renderSubmitButton()}
+                    <View style={styles.button}>
+                        <Button onPress={close} title={onSubmit ? "CANCEL" : "OK"} color="#7A0002"/>
+                    </View>
                 </View>
             </View>
         );
@@ -67,8 +67,6 @@ const styles = StyleSheet.create({
         paddingRight: 16,
         paddingLeft: 16,
         paddingTop: 8,
-    },
-    body: {
     },
     titleBar: {
         paddingTop: 24,
