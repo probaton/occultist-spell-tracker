@@ -1,7 +1,6 @@
 import React from "react";
-import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import TouchButton from "./controls/TouchButton";
 import XButton from "./images/XButton";
 
 interface IProps {
@@ -15,9 +14,7 @@ export default class Interaction extends React.Component<IProps> {
     render() {
         const { dialogTitle, close, loading, children } = this.props;
         return (
-            <View
-                style={styles.container}
-            >
+            <View>
                 <View style={styles.titleBar}>
                     <Text style={styles.title}>{dialogTitle}</Text>
                     <View style={styles.xButton}>
@@ -32,15 +29,10 @@ export default class Interaction extends React.Component<IProps> {
                             ? this.renderLoadingSpinner()
                             : children                        }
                     </View>
-                    <View style={styles.buttonBar}>
-                        <TouchButton
-                            onPress={close}
-                            caption="OK"
-                            buttonStyle={styles.button}
-                            captionStyle={styles.buttonText}
-                        />
-                        {this.renderSubmitButton()}
+                    <View style={styles.button}>
+                        <Button onPress={close} title="OK" color="#7A0002"/>
                     </View>
+                    {this.renderSubmitButton()}
                 </View>
             </View>
         );
@@ -62,29 +54,21 @@ export default class Interaction extends React.Component<IProps> {
             return null;
         } else {
             return (
-                <TouchButton
-                    onPress={onSubmit}
-                    caption="SUBMIT"
-                    buttonStyle={styles.button}
-                    captionStyle={styles.buttonText}
-                />
+                <View style={styles.button}>
+                    <Button onPress={onSubmit} title="SUBMIT" color="#7A0002"/>
+                </View>
             );
         }
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     padding: {
-        flex: 1,
-        padding: 24,
+        paddingRight: 16,
+        paddingLeft: 16,
+        paddingTop: 8,
     },
     body: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
     },
     titleBar: {
         paddingTop: 24,
@@ -106,20 +90,8 @@ const styles = StyleSheet.create({
     spinner: {
         marginTop: 15,
     },
-    buttonBar: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "center",
-        maxHeight: 52,
-        paddingTop: 8,
-        paddingBottom: 8,
-    },
     button: {
-        margin: 5,
-        minWidth: 64,
-        height: 36,
-        alignItems: "center",
-        justifyContent: "center",
+        paddingTop: 6,
     },
     buttonText: {
         fontSize: 24,

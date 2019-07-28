@@ -61,7 +61,7 @@ export default class SpellDialog extends React.Component<IProps, IState> {
                 onSubmit={this.submitSpell}
                 close={this.props.close}
             >
-                <Button title="Import" onPress={this.importSpells}/>
+                <Button title="Import" onPress={this.importSpells} color="#7A0002"/>
                 <Input
                     placeholder="Spell name"
                     onChangeText={nameInput => this.setState({ nameInput })}
