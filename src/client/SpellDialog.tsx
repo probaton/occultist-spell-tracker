@@ -125,6 +125,9 @@ export default class SpellDialog extends React.Component<IProps, IState> {
 
     private importSpells = async () => {
         await SpellStore.set(await importSpells());
+        if (this.props.onSubmit) {
+            this.props.onSubmit();
+        }
         Alert.alert("Info", "Import successful");
         this.props.close();
     }
