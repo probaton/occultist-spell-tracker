@@ -47,10 +47,10 @@ export default class TabBar extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        paddingTop: 24,
         backgroundColor: "#C70909",
     },
     plusButton: {
+        paddingTop: 34,
         flex: 1,
         alignItems: "center",
         marginTop: -6,

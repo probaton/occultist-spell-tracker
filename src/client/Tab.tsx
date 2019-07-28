@@ -37,11 +37,13 @@ const styles = StyleSheet.create({
         width: Dimensions.get("window").width / 100 * 30,
         alignItems: "center",
         backgroundColor: "#7A0002",
+        paddingTop: 42,
         padding: 8,
     },
     passiveTab: {
         width: Dimensions.get("window").width / 100 * 30,
         alignItems: "center",
+        paddingTop: 42,
         padding: 8,
     },
     caption: {

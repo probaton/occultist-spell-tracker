@@ -23,11 +23,11 @@ export default class SpellView extends React.Component<IProps> {
                 <Text>{spell.trigger}</Text>
                 <Text style={styles.label}>Target</Text>
                 <Text>{spell.target}</Text>
+                <Text style={styles.label}>Attack</Text>
+                <Text>{spell.attack}</Text>
 
                 <Text style={styles.divider}>___________________________</Text>
 
-                <Text style={styles.label}>Attack</Text>
-                <Text>{spell.attack}</Text>
                 <Text style={styles.label}>Effect</Text>
                 <Text>{spell.effect}</Text>
                 <Text style={styles.label}>Miss</Text>

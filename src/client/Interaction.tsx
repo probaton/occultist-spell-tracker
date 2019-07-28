@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     },
     titleBar: {
-        paddingTop: 24,
+        paddingTop: 42,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#C70909",
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     xButton: {
         position: "absolute",
         right: 12,
-        paddingTop: 16,
+        paddingTop: 34,
     },
     spinner: {
         marginTop: 15,
