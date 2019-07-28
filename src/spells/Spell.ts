@@ -8,10 +8,10 @@ export default class Spell {
     trigger: string;
     target: string;
     attack: string;
-    miss: string;
     effect: string;
-    retainFocus: number;
+    miss: string;
     recharge: number;
+    retainFocus: number;
     level: number;
 
     constructor(
@@ -19,10 +19,10 @@ export default class Spell {
         trigger: string,
         target: string,
         attack: string,
-        miss: string,
         effect: string,
-        retainFocus: number,
+        miss: string,
         recharge: number,
+        retainFocus: number,
         level: number,
     ) {
         this.id = uuid();
@@ -31,10 +31,10 @@ export default class Spell {
         this.trigger = trigger;
         this.target = target;
         this.attack = attack;
-        this.miss = miss;
         this.effect = effect;
-        this.retainFocus = retainFocus;
+        this.miss = miss;
         this.recharge = recharge;
+        this.retainFocus = retainFocus;
         this.level = level;
     }
 }

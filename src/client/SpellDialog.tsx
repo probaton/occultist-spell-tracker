@@ -17,7 +17,10 @@ interface IState {
     nameInput: string;
     nameValidation?: string;
     triggerInput: string;
+    targetInput: string;
+    attackInput: string;
     effectInput: string;
+    missInput: string;
     rechargeInput: string;
     rechargeValidation?: string;
     retainFocusInput: string;
@@ -32,7 +35,10 @@ export default class SpellDialog extends React.Component<IProps, IState> {
         this.state = {
             nameInput: "",
             triggerInput: "",
+            targetInput: "",
+            attackInput: "",
             effectInput: "",
+            missInput: "",
             rechargeInput: "",
             retainFocusInput: "",
             levelInput: "",
@@ -41,7 +47,10 @@ export default class SpellDialog extends React.Component<IProps, IState> {
 
     render() {
         const triggerInputRef = React.createRef<TextInput>();
+        const targetInputRef = React.createRef<TextInput>();
+        const attackInputRef = React.createRef<TextInput>();
         const effectInputRef = React.createRef<TextInput>();
+        const missInputRef = React.createRef<TextInput>();
         const rechargeInputRef = React.createRef<TextInput>();
         const retainFocusInputRef = React.createRef<TextInput>();
         const levelInputRef = React.createRef<TextInput>();
@@ -63,12 +72,30 @@ export default class SpellDialog extends React.Component<IProps, IState> {
                     placeholder="Trigger"
                     onChangeText={triggerInput => this.setState({ triggerInput })}
                     inputRef={triggerInputRef}
+                    nextFocus={targetInputRef}
+                />
+                <Input
+                    placeholder="Target"
+                    onChangeText={targetInput => this.setState({ targetInput })}
+                    inputRef={targetInputRef}
+                    nextFocus={attackInputRef}
+                />
+                <Input
+                    placeholder="Attack"
+                    onChangeText={attackInput => this.setState({ attackInput })}
+                    inputRef={attackInputRef}
                     nextFocus={effectInputRef}
                 />
                 <Input
                     placeholder="Effect"
                     onChangeText={effectInput => this.setState({ effectInput })}
                     inputRef={effectInputRef}
+                    nextFocus={missInputRef}
+                />
+                <Input
+                    placeholder="Miss"
+                    onChangeText={missInput => this.setState({ missInput })}
+                    inputRef={missInputRef}
                     nextFocus={rechargeInputRef}
                 />
                 <Input
@@ -125,7 +152,8 @@ export default class SpellDialog extends React.Component<IProps, IState> {
 
         this.setState(validationState);
         if (!Object.keys(validationState).some(key => validationState[key] !== undefined)) {
-            await SpellStore.add(new Spell(name, this.state.triggerInput, this.state.effectInput, recharge!, retainFocus!, level!));
+            const { triggerInput, targetInput, attackInput, effectInput, missInput } = this.state;
+            await SpellStore.add(new Spell(name, triggerInput, targetInput, attackInput, effectInput, missInput, recharge!, retainFocus!, level!));
             if (this.props.onSubmit) {
                 this.props.onSubmit();
             }
