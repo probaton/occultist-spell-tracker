@@ -72,12 +72,12 @@ export default class Home extends React.Component<any, IState> {
         return (
             <>
                 <View style={styles.titleBar}>
-                    <Text style={styles.name}>{spell.name}</Text>
-                    <View style={styles.rightContainer}>
+                    <Text style={styles.title}>{spell.name}</Text>
+                    <View style={styles.rechargeContainer}>
                         <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
                     </View>
                 </View>
-                <Text style={styles.trigger}>{spell.trigger}</Text>
+                <Text style={styles.bodyText}>{spell.trigger}</Text>
             </>
         );
     }
@@ -85,8 +85,8 @@ export default class Home extends React.Component<any, IState> {
     private rechargeItemContent = (spell: Spell) => {
         return (
                 <View style={styles.titleBar}>
-                    <Text style={styles.name}>{spell.name}</Text>
-                    <View style={styles.rightContainer}>
+                    <Text style={styles.title}>{spell.name}</Text>
+                    <View style={styles.rechargeContainer}>
                         <Text style={styles.recharge}>{this.rechargeText(spell)}</Text>
                     </View>
                 </View>
@@ -96,8 +96,8 @@ export default class Home extends React.Component<any, IState> {
     private inactiveItemContent = (spell: Spell) => {
         return (
             <>
-                <Text style={styles.name}>{spell.name}</Text>
-                <Text style={styles.trigger}>{spell.trigger}</Text>
+                <Text style={styles.title}>{spell.name}</Text>
+                <Text style={styles.bodyText}>{spell.effect}</Text>
             </>
         );
     }
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     titleBar: {
         flexDirection: "row",
     },
-    name: {
+    title: {
         fontWeight: "bold",
         fontSize: 20,
         color: "#000000",
@@ -138,10 +138,10 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         fontSize: 16,
     },
-    trigger: {
+    bodyText: {
 
     },
-    rightContainer: {
+    rechargeContainer: {
       flex: 1,
       flexDirection: "row",
       justifyContent: "flex-end",
