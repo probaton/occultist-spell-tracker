@@ -14,7 +14,7 @@ export default class Interaction extends React.Component<IProps> {
     render() {
         const { dialogTitle, close, loading, onSubmit, children } = this.props;
         return (
-            <View>
+            <View style={styles.container}>
                 <View style={styles.titleBar}>
                     <Text style={styles.title}>{dialogTitle}</Text>
                     <View style={styles.xButton}>
@@ -23,15 +23,17 @@ export default class Interaction extends React.Component<IProps> {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.padding}>
+                <View style={styles.body}>
                     <View>
                         {loading
                             ? this.renderLoadingSpinner()
-                            : children                        }
+                            : children}
                     </View>
-                    {this.renderSubmitButton()}
-                    <View style={styles.button}>
-                        <Button onPress={close} title={onSubmit ? "CANCEL" : "OK"} color="#7A0002"/>
+                    <View style={styles.buttonBar}>
+                        {this.renderSubmitButton()}
+                        <View style={styles.button}>
+                            <Button onPress={close} title={onSubmit ? "CANCEL" : "OK"} color="#7A0002"/>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -63,10 +65,14 @@ export default class Interaction extends React.Component<IProps> {
 }
 
 const styles = StyleSheet.create({
-    padding: {
+    container: {
+        flex: 1,
+    },
+    body: {
         paddingRight: 16,
         paddingLeft: 16,
         paddingTop: 8,
+        flex: 1,
     },
     titleBar: {
         paddingTop: 42,
@@ -88,12 +94,16 @@ const styles = StyleSheet.create({
     spinner: {
         marginTop: 15,
     },
+    buttonBar: {
+        flex: 1,
+        justifyContent: "flex-end",
+        marginBottom: 8,
+    },
     button: {
-        paddingTop: 6,
+        marginTop: 6,
     },
     buttonText: {
         fontSize: 24,
         textAlign: "center",
-        padding: 12,
     },
 });
