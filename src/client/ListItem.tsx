@@ -13,6 +13,7 @@ interface IProps {
 }
 
 interface IState {
+    isSwiping: boolean;
     position: Animated.ValueXY;
 }
 
@@ -28,6 +29,7 @@ export default class ListItem extends React.Component<IProps, IState> {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderTerminationRequest: () => false,
             onPanResponderMove: (event, gestureState) => {
+                this.setState({ isSwiping: true });
                 if (gestureState.dx > 35 || gestureState.dx < -35) {
                     position.setValue({x: gestureState.dx, y: 0});
                 }
@@ -43,14 +45,15 @@ export default class ListItem extends React.Component<IProps, IState> {
                         duration: 150,
                     }).start();
                 }
+                this.setState({ isSwiping: false });
             },
         });
-        this.state = { position };
+        this.state = { position, isSwiping: false };
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={this.state.isSwiping ? styles.swipingContainer : styles.staticContainer}>
                 <Animated.View
                     style={[this.state.position.getLayout()]}
                     {...this.swipeResponder.panHandlers}
@@ -95,7 +98,12 @@ export default class ListItem extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    staticContainer: {
+        borderColor: "#DDDDDD",
+        borderBottomWidth: 1,
+    },
+    swipingContainer: {
+        opacity: 0.2,
         borderColor: "#DDDDDD",
         borderBottomWidth: 1,
     },
