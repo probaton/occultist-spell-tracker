@@ -8,24 +8,16 @@ import { SpellState } from "../spells/SpellState";
 interface IProps {
     onTabPress: (selectedTab: SpellState) => void;
     onAddPress: () => void;
-}
-
-interface IState {
     activeTab: SpellState;
 }
 
-export default class TabBar extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = { activeTab: "active" };
-    }
-
+export default class TabBar extends React.Component<IProps> {
     render() {
         return (
             <View style={styles.container}>
-                <Tab caption="Active" tabName="active" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
-                <Tab caption="Recharge" tabName="recharge" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
-                <Tab caption="Inactive" tabName="inactive" activeTab={this.state.activeTab} onPress={this.onTabPress}/>
+                <Tab caption="Active" tabName="active" activeTab={this.props.activeTab} onPress={this.props.onTabPress}/>
+                <Tab caption="Recharge" tabName="recharge" activeTab={this.props.activeTab} onPress={this.props.onTabPress}/>
+                <Tab caption="Inactive" tabName="inactive" activeTab={this.props.activeTab} onPress={this.props.onTabPress}/>
                 <TouchableOpacity style={styles.plusButton} onPress={this.props.onAddPress}>
                     <Image
                         style={styles.plus}
@@ -36,11 +28,6 @@ export default class TabBar extends React.Component<IProps, IState> {
                 </TouchableOpacity>
             </View>
         );
-    }
-
-    private onTabPress = (tab: SpellState) => {
-        this.props.onTabPress(tab);
-        this.setState({ activeTab: tab });
     }
 }
 

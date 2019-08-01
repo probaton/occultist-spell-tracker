@@ -46,7 +46,7 @@ export default class Home extends React.Component<any, IState> {
     private renderContent() {
         return (
             <>
-                <TabBar onTabPress={this.selectTab} onAddPress={() => this.setState({ viewState: "createSpell" })}/>
+                <TabBar onTabPress={this.selectTab} activeTab={this.state.activeTab} onAddPress={() => this.setState({ viewState: "createSpell" })}/>
                 {this.state.loading ? null : this.renderList()}
             </>
         );
