@@ -9,7 +9,7 @@ import TabBar from "./TabBar";
 
 import { generateRechargeText } from "../helpers/spellHelpers";
 import Spell from "../spells/Spell";
-import { SpellState } from "../spells/SpellState";
+import { nextSpellState, previousSpellState, SpellState } from "../spells/SpellState";
 import SpellStore from "../store/SpellStore";
 
 interface IState {
@@ -46,18 +46,14 @@ export default class Home extends React.Component<any, IState> {
     private renderContent() {
         return (
             <>
-                <TabBar onTabPress={this.selectTab} activeTab={this.state.activeTab} onAddPress={() => this.setState({ viewState: "createSpell" })}/>
+                <TabBar
+                    onTabPress={(activeTab: SpellState) => this.setState({ activeTab })}
+                    activeTab={this.state.activeTab}
+                    onAddPress={() => this.setState({ viewState: "createSpell" })}
+                />
                 {this.state.loading ? null : this.renderList()}
             </>
         );
-    }
-
-    private renderList() {
-        switch (this.state.activeTab) {
-            case ("active"): return <List items={this.filterSpellsByState("active")} renderItem={this.renderItem(this.activeItemContent)}/>;
-            case ("recharge"): return <List items={this.filterSpellsByState("recharge")} renderItem={this.renderItem(this.rechargeItemContent)}/>;
-            case ("inactive"): return <List items={this.filterSpellsByState("inactive")} renderItem={this.renderItem(this.inactiveItemContent)}/>;
-        }
     }
 
     private renderSpellView = (spell?: Spell) => {
@@ -66,6 +62,17 @@ export default class Home extends React.Component<any, IState> {
         } else {
             return <SpellView spell={spell} close={this.closeDialogs}/>;
         }
+    }
+
+    private renderList() {
+        return (
+            <List
+                items={this.filterSpellsByState(this.state.activeTab)}
+                renderItem={this.renderItem(this.getItemContent())}
+                swipeRight={this.swipeListRight}
+                swipeLeft={this.swipeListLeft}
+            />
+        );
     }
 
     private renderItem(itemContent: (spell: Spell) => React.ReactNode) {
@@ -81,58 +88,61 @@ export default class Home extends React.Component<any, IState> {
         };
     }
 
-    private activeItemContent = (spell: Spell) => {
-        return (
-            <>
-                <View style={styles.titleBar}>
-                    <Text style={styles.title}>{spell.name}</Text>
-                    <View style={styles.rechargeContainer}>
-                        <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
+    private getItemContent(): (spell: Spell) => React.ReactNode {
+        switch (this.state.activeTab) {
+            case ("active"): return (spell: Spell) => {
+                return (
+                    <>
+                        <View style={styles.titleBar}>
+                            <Text style={styles.title}>{spell.name}</Text>
+                            <View style={styles.rechargeContainer}>
+                                <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
+                            </View>
+                        </View>
+                        <Text>{spell.trigger}</Text>
+                    </>
+                );
+            };
+            case ("recharge"): return (spell: Spell) => {
+                return (
+                    <View style={styles.titleBar}>
+                        <Text style={styles.title}>{spell.name}</Text>
+                        <View style={styles.rechargeContainer}>
+                            <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
+                        </View>
                     </View>
-                </View>
-                <Text>{spell.trigger}</Text>
-            </>
-        );
+                );
+            };
+            case ("inactive"): return (spell: Spell) => {
+                return (
+                    <>
+                        <View style={styles.titleBar}>
+                            <Text style={styles.title}>{spell.name}</Text>
+                            <View style={styles.rechargeContainer}>
+                                <Text style={styles.recharge}>{"Level " + spell.level}</Text>
+                            </View>
+                        </View>
+                        <Text>{spell.effect}</Text>
+                    </>
+                );
+            };
+        }
     }
 
-    private rechargeItemContent = (spell: Spell) => {
-        return (
-            <View style={styles.titleBar}>
-                <Text style={styles.title}>{spell.name}</Text>
-                <View style={styles.rechargeContainer}>
-                    <Text style={styles.recharge}>{generateRechargeText(spell)}</Text>
-                </View>
-            </View>
-        );
+    private swipeListRight = () => {
+        this.setState({ activeTab: previousSpellState(this.state.activeTab) });
     }
 
-    private inactiveItemContent = (spell: Spell) => {
-        return (
-            <>
-                <View style={styles.titleBar}>
-                    <Text style={styles.title}>{spell.name}</Text>
-                    <View style={styles.rechargeContainer}>
-                        <Text style={styles.recharge}>{"Level " + spell.level}</Text>
-                    </View>
-                </View>
-                <Text>{spell.effect}</Text>
-            </>
-        );
+    private swipeListLeft = () => {
+        this.setState({ activeTab: nextSpellState(this.state.activeTab) });
     }
 
     private openSpellView = (spell: Spell) => {
-        this.setState({
-            selectedSpell: spell,
-            viewState: "viewSpell",
-        });
+        this.setState({ selectedSpell: spell, viewState: "viewSpell" });
     }
 
     private closeDialogs = () => {
         this.setState({ viewState: undefined });
-    }
-
-    private selectTab = (tab: SpellState) => {
-        this.setState({ activeTab: tab });
     }
 
     private refreshSpells = async () => {

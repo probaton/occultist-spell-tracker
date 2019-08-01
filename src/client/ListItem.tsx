@@ -2,7 +2,7 @@ import React from "react";
 import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import Spell from "../spells/Spell";
-import { SpellState } from "../spells/SpellState";
+import { nextSpellState, previousSpellState } from "../spells/SpellState";
 import SpellStore from "../store/SpellStore";
 
 interface IProps {
@@ -67,29 +67,13 @@ export default class ListItem extends React.Component<IProps, IState> {
     }
 
     private swipeRight = async (spell: Spell) => {
-        spell.state = this.nextState(spell.state);
+        spell.state = nextSpellState(spell.state);
         this.props.updateSpells(await SpellStore.update(spell));
     }
 
     private swipeLeft = async (spell: Spell) => {
-        spell.state = this.previousState(spell.state);
+        spell.state = previousSpellState(spell.state);
         this.props.updateSpells(await SpellStore.update(spell));
-    }
-
-    private nextState(spellState: SpellState): SpellState {
-        switch (spellState) {
-            case "active": return "recharge";
-            case "recharge": return "inactive";
-            case "inactive": return "active";
-        }
-    }
-
-    private previousState(spellState: SpellState): SpellState {
-        switch (spellState) {
-            case "active": return "inactive";
-            case "recharge": return "active";
-            case "inactive": return "recharge";
-        }
     }
 
     private openSpellView = () => {
