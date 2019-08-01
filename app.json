@@ -5,7 +5,7 @@
         "privacy": "public",
         "sdkVersion": "32.0.0",
         "platforms": [ "android" ],
-        "version": "1",
+        "version": "3",
         "orientation": "portrait",
         "icon": "./assets/androidIcon.png",
         "splash": {
@@ -20,12 +20,9 @@
             "**/*"
         ],
         "android": {
-            "versionCode": 1,
+            "versionCode": 3,
             "package": "com.dexx.occultistSpellTracker",
             "permissions": []
-        },
-        "ios": {
-            "supportsTablet": true
         },
         "primaryColor": "#C70909"
     }
