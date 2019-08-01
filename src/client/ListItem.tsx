@@ -24,17 +24,19 @@ export default class ListItem extends React.Component<IProps, IState> {
 
         const position = new Animated.ValueXY();
         this.swipeResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (event, gestureState) => false,
-            onMoveShouldSetPanResponder: (event, gestureState) => true,
-            onPanResponderTerminationRequest: (event, gestureState) => false,
+            onStartShouldSetPanResponder: () => false,
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderTerminationRequest: () => false,
             onPanResponderMove: (event, gestureState) => {
-                if (gestureState.dx > 35) {
+                if (gestureState.dx > 35 || gestureState.dx < -35) {
                     position.setValue({x: gestureState.dx, y: 0});
                 }
             },
             onPanResponderRelease: (event, gestureState) => {
                 if (gestureState.dx > 120 ) {
                     this.swipeRight(this.props.spell);
+                } else if (gestureState.dx < -120) {
+                    this.swipeLeft(this.props.spell);
                 } else {
                     Animated.timing(this.state.position, {
                         toValue: {x: 0, y: 0},
@@ -49,13 +51,13 @@ export default class ListItem extends React.Component<IProps, IState> {
     render() {
         return (
             <View style={styles.container}>
-                <Animated.View style={[this.state.position.getLayout()]}{...this.swipeResponder.panHandlers}>
-                    <View style={styles.absoluteCell}/>
-                    <View style={styles.body}>
-                        <TouchableOpacity onPress={this.openSpellView}>
-                            {this.props.renderContent(this.props.spell)}
-                        </TouchableOpacity>
-                    </View>
+                <Animated.View
+                    style={[this.state.position.getLayout()]}
+                    {...this.swipeResponder.panHandlers}
+                >
+                    <TouchableOpacity style={styles.body} onPress={this.openSpellView}>
+                        {this.props.renderContent(this.props.spell)}
+                    </TouchableOpacity>
                 </Animated.View>
             </View>
         );
@@ -94,22 +96,10 @@ export default class ListItem extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: -100,
         borderColor: "#DDDDDD",
         borderBottomWidth: 1,
     },
-    absoluteCell: {
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        width: 100,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "center",
-    },
     body: {
-        marginLeft: 100,
         backgroundColor: "#FFFFFF",
         paddingLeft: 12,
         paddingRight: 12,
