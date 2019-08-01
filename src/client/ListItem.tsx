@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, PanResponder, StyleSheet, TouchableOpacity } from "react-native";
+import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import Spell from "../spells/Spell";
 import { SpellState } from "../spells/SpellState";
@@ -12,33 +12,52 @@ interface IProps {
     openSpellView: (spell: Spell) => void;
 }
 
-export default class ListItem extends React.Component<IProps> {
+interface IState {
+    position: Animated.ValueXY;
+}
+
+export default class ListItem extends React.Component<IProps, IState> {
     swipeResponder: any;
 
     constructor(props: IProps) {
         super(props);
+
+        const position = new Animated.ValueXY();
         this.swipeResponder = PanResponder.create({
             onStartShouldSetPanResponder: (event, gestureState) => false,
             onMoveShouldSetPanResponder: (event, gestureState) => true,
             onPanResponderTerminationRequest: (event, gestureState) => false,
-            onPanResponderRelease: (event, gestureState) => {
-                if (gestureState.dx > 100) {
-                    this.swipeRight(this.props.spell);
+            onPanResponderMove: (event, gestureState) => {
+                if (gestureState.dx > 35) {
+                    position.setValue({x: gestureState.dx, y: 0});
                 }
-                if (gestureState.dx < -100) {
-                    this.swipeLeft(this.props.spell);
+            },
+            onPanResponderRelease: (event, gestureState) => {
+                if (gestureState.dx > 120 ) {
+                    this.swipeRight(this.props.spell);
+                } else {
+                    Animated.timing(this.state.position, {
+                        toValue: {x: 0, y: 0},
+                        duration: 150,
+                    }).start();
                 }
             },
         });
+        this.state = { position };
     }
 
     render() {
         return (
-                <Animated.View style={styles.container}{...this.swipeResponder.panHandlers}>
-                    <TouchableOpacity onPress={this.openSpellView}>
-                        {this.props.renderContent(this.props.spell)}
-                    </TouchableOpacity>
+            <View style={styles.container}>
+                <Animated.View style={[this.state.position.getLayout()]}{...this.swipeResponder.panHandlers}>
+                    <View style={styles.absoluteCell}/>
+                    <View style={styles.body}>
+                        <TouchableOpacity onPress={this.openSpellView}>
+                            {this.props.renderContent(this.props.spell)}
+                        </TouchableOpacity>
+                    </View>
                 </Animated.View>
+            </View>
         );
     }
 
@@ -75,9 +94,23 @@ export default class ListItem extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FFFFFF",
+        marginLeft: -100,
         borderColor: "#DDDDDD",
         borderBottomWidth: 1,
+    },
+    absoluteCell: {
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        width: 100,
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    body: {
+        marginLeft: 100,
+        backgroundColor: "#FFFFFF",
         paddingLeft: 12,
         paddingRight: 12,
         paddingTop: 6,
