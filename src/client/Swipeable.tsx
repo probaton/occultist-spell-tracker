@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, PanResponder, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { Animated, GestureResponderEvent, PanResponder, PanResponderGestureState, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 interface IProps {
     style?: StyleProp<ViewStyle>;
@@ -19,36 +19,14 @@ export default class Swipeable extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        const position = new Animated.ValueXY();
         this.swipeResponder = PanResponder.create({
             onStartShouldSetPanResponder: () => false,
             onMoveShouldSetPanResponder: () => true,
             onPanResponderTerminationRequest: () => false,
-            onPanResponderMove: (event, gestureState) => {
-                if (this.props.onSwipeStart) {
-                    this.props.onSwipeStart();
-                }
-                if (gestureState.dx > 35 || gestureState.dx < -35) {
-                    position.setValue({x: gestureState.dx, y: 0});
-                }
-            },
-            onPanResponderRelease: (event, gestureState) => {
-                if (gestureState.dx > 120 && this.props.swipeRight) {
-                    this.props.swipeRight();
-                } else if (gestureState.dx < -120 && this.props.swipeLeft) {
-                    this.props.swipeLeft();
-                } else {
-                    Animated.timing(this.state.position, {
-                        toValue: {x: 0, y: 0},
-                        duration: 150,
-                    }).start();
-                }
-                if (this.props.onSwipeEnd) {
-                    this.props.onSwipeEnd();
-                }
-            },
+            onPanResponderMove: this.onSwipe,
+            onPanResponderRelease: this.onSwipeRelease,
         });
-        this.state = { position };
+        this.state = { position: new Animated.ValueXY() };
     }
 
     render() {
@@ -62,6 +40,31 @@ export default class Swipeable extends React.Component<IProps, IState> {
                 </Animated.View>
             </View>
         );
+    }
+
+    private onSwipe = (event: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+        if (this.props.onSwipeStart) {
+            this.props.onSwipeStart();
+        }
+        if (gestureState.dx > 35 || gestureState.dx < -35) {
+            this.state.position.setValue({x: gestureState.dx, y: 0});
+        }
+    }
+
+    private onSwipeRelease = (event: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+        if (gestureState.dx > 120 && this.props.swipeRight) {
+            this.props.swipeRight();
+        } else if (gestureState.dx < -120 && this.props.swipeLeft) {
+            this.props.swipeLeft();
+        } else {
+            Animated.timing(this.state.position, {
+                toValue: {x: 0, y: 0},
+                duration: 150,
+            }).start();
+        }
+        if (this.props.onSwipeEnd) {
+            this.props.onSwipeEnd();
+        }
     }
 }
 
