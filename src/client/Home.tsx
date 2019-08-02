@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, BackHandler, NativeEventSubscription, StyleSheet, Text, View } from "react-native";
 
 import List from "./List";
 import ListItem from "./ListItem";
@@ -13,7 +13,7 @@ import { nextSpellState, previousSpellState, SpellState } from "../spells/SpellS
 import SpellStore from "../store/SpellStore";
 
 interface IState {
-    viewState: "createSpell" | "viewSpell" | undefined;
+    viewState?: "createSpell" | "viewSpell";
     spells: Spell[];
     loading: boolean;
     activeTab: SpellState;
@@ -21,18 +21,29 @@ interface IState {
 }
 
 export default class Home extends React.Component<any, IState> {
+    private backHandler?: NativeEventSubscription;
+
     constructor(props: any) {
         super(props);
         this.state = {
             loading: true,
-            viewState: undefined,
             spells: [],
             activeTab: "active",
         };
     }
 
     async componentDidMount() {
+        this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+            this.closeDialogs();
+            return true;
+        });
         this.refreshSpells();
+    }
+
+    componentWillUnmount() {
+        if (this.backHandler) {
+            this.backHandler.remove();
+        }
     }
 
     render() {
