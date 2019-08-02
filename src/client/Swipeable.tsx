@@ -7,6 +7,7 @@ interface IProps {
     swipeLeft?: () => void;
     onSwipeStart?: () => void;
     onSwipeEnd?: () => void;
+    snapBackOnSuccess?: boolean;
 }
 
 interface IState {
@@ -47,23 +48,31 @@ export default class Swipeable extends React.Component<IProps, IState> {
             this.props.onSwipeStart();
         }
         if (gestureState.dx > 35 || gestureState.dx < -35) {
-            this.state.position.setValue({x: gestureState.dx, y: 0});
+            this.state.position.setValue({ x: gestureState.dx, y: 0 });
         }
     }
 
     private onSwipeRelease = (event: GestureResponderEvent, gestureState: PanResponderGestureState) => {
         if (gestureState.dx > 120 && this.props.swipeRight) {
             this.props.swipeRight();
+            this.snapBackIfRequired();
         } else if (gestureState.dx < -120 && this.props.swipeLeft) {
             this.props.swipeLeft();
+            this.snapBackIfRequired();
         } else {
             Animated.timing(this.state.position, {
-                toValue: {x: 0, y: 0},
+                toValue: { x: 0, y: 0 },
                 duration: 150,
             }).start();
         }
         if (this.props.onSwipeEnd) {
             this.props.onSwipeEnd();
+        }
+    }
+
+    private snapBackIfRequired() {
+        if (this.props.snapBackOnSuccess) {
+            this.state.position.setValue({ x: 0, y: 0 });
         }
     }
 }
